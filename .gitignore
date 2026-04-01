@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Ignore mac os specific files and temporary scripts
+._*
+make_*.js
+output.txt
+pdf_reader_fifa/

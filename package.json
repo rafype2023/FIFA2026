@@ -9,12 +9,17 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "mongodb": "^7.1.1",
+    "mongoose": "^9.3.3",
     "next": "16.2.2",
+    "pdf-parse": "^2.4.5",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
     "eslint": "^9",
     "eslint-config-next": "16.2.2"
-  }
+  },
+  "description": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app)."
 }
