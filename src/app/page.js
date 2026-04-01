@@ -40,11 +40,28 @@ export default function Home() {
       });
       if (!res.ok) throw new Error("Failed to save prediction");
 
+      let summaryText = `=== YOUR FIFA 2026 BRACKET ===\n\n`;
+      summaryText += `🏆 CHAMPION: ${champion}\n`;
+      
+      const runnerUp = bracket.FINAL[0].team1 === champion ? bracket.FINAL[0].team2 : bracket.FINAL[0].team1;
+      summaryText += `🥈 RUNNER-UP: ${runnerUp || "TBD"}\n\n`;
+      
+      summaryText += `💫 FINAL FOUR (Semi-Finals):\n`;
+      bracket.SF.forEach(m => {
+        if(m.team1 && m.team2) summaryText += ` • ${m.team1} vs ${m.team2}\n`;
+      });
+      
+      summaryText += `\n⚔️ ELITE EIGHT (Quarter-Finals):\n`;
+      bracket.QF.forEach(m => {
+        if(m.team1 && m.team2) summaryText += ` • ${m.team1} vs ${m.team2}\n`;
+      });
+
       const templateParams = {
         to_name: userInfo.name,
         to_email: userInfo.email,
         champion: champion,
-        message: "Thank you for submitting your FIFA 2026 Bracket! Your chosen champion is: " + champion
+        message: "Thank you for submitting your FIFA 2026 Bracket! Your chosen champion is: " + champion,
+        bracket_summary: summaryText
       };
 
       if (process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY && process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY_HERE") {
