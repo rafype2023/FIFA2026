@@ -46,15 +46,32 @@ export default function Home() {
       const runnerUp = bracket.FINAL[0].team1 === champion ? bracket.FINAL[0].team2 : bracket.FINAL[0].team1;
       summaryText += `🥈 RUNNER-UP: ${runnerUp || "TBD"}\n\n`;
       
-      summaryText += `💫 FINAL FOUR (Semi-Finals):\n`;
-      bracket.SF.forEach(m => {
-        if(m.team1 && m.team2) summaryText += ` • ${m.team1} vs ${m.team2}\n`;
+      summaryText += `-- ROUND OF 32 WINNERS --\n`;
+      bracket.R32.forEach(m => {
+        if(m.winner) summaryText += ` • ${m.winner} (def. ${m.winner === m.team1 ? m.team2 : m.team1})\n`;
       });
       
-      summaryText += `\n⚔️ ELITE EIGHT (Quarter-Finals):\n`;
-      bracket.QF.forEach(m => {
-        if(m.team1 && m.team2) summaryText += ` • ${m.team1} vs ${m.team2}\n`;
+      summaryText += `\n-- ROUND OF 16 WINNERS --\n`;
+      bracket.R16.forEach(m => {
+        if(m.winner) summaryText += ` • ${m.winner}\n`;
       });
+      
+      summaryText += `\n-- QUARTER-FINALISTS --\n`;
+      bracket.QF.forEach(m => {
+         if(m.winner) summaryText += ` • ${m.winner}\n`;
+      });
+      
+      summaryText += `\n-- SEMI-FINALISTS --\n`;
+      bracket.SF.forEach(m => {
+         if(m.winner) summaryText += ` • ${m.winner}\n`;
+      });
+      
+      summaryText += `\n=== GROUP STAGE WINNERS ===\n`;
+      if(groupData) {
+        Object.entries(groupData).forEach(([g, teams]) => {
+           summaryText += `Group ${g}: 1. ${teams[0]} | 2. ${teams[1]}\n`;
+        });
+      }
 
       const templateParams = {
         to_name: userInfo.name,
