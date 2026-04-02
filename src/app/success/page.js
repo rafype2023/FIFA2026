@@ -1,6 +1,19 @@
+"use client";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 
 export default function Success() {
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 1.0;
+      audioRef.current.play().catch(err => {
+        console.warn("Audio autoplay blocked:", err);
+      });
+    }
+  }, []);
+
   return (
     <main className="container">
       <div className="glass-panel" style={{maxWidth: "600px", margin: "4rem auto", padding: "3rem", textAlign: "center"}}>
@@ -10,8 +23,8 @@ export default function Success() {
           Hemos guardado con éxito tus predicciones para la Copa Mundial 2026.<br/>
           Te enviamos una confirmación por correo electrónico.
         </p>
-        
-        <audio src="/Gol.mp3" autoPlay />
+
+        <audio ref={audioRef} src="/Gol.mp3" preload="auto" />
 
         <Link href="/">
            <button className="btn-primary">Someter Otro Bracket</button>
