@@ -44,10 +44,14 @@ export default async function Standings() {
       let ptsSF = 0;
       let ptsFinal = 0;
 
-      if (masterKey.groupPicks && player.groupPicks && typeof masterKey.groupPicks === "object") {
-        Object.keys(masterKey.groupPicks).forEach(groupLetter => {
-           const masterArray = masterKey.groupPicks[groupLetter];
-           const playerArray = player.groupPicks[groupLetter];
+      // groupPicks is stored as { picks: { A: [...], B: [...] }, thirdPlaces: [...] }
+      const masterGroups = masterKey.groupPicks?.picks;
+      const playerGroups = player.groupPicks?.picks;
+
+      if (masterGroups && playerGroups && typeof masterGroups === "object") {
+        Object.keys(masterGroups).forEach(groupLetter => {
+           const masterArray = masterGroups[groupLetter];
+           const playerArray = playerGroups[groupLetter];
            if (Array.isArray(masterArray) && Array.isArray(playerArray)) {
               masterArray.forEach((teamMaster, i) => {
                  if (playerArray[i] === teamMaster) {
