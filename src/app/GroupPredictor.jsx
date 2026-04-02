@@ -20,11 +20,6 @@ export default function GroupPredictor({ onComplete }) {
   const [groups, setGroups] = useState(INITIAL_GROUPS);
   const [selectedThirds, setSelectedThirds] = useState([]);
 
-  useEffect(() => {
-    const currentThirds = Object.values(groups).map(teams => teams[2]);
-    setSelectedThirds(prev => prev.filter(t => currentThirds.includes(t)));
-  }, [groups]);
-
   const moveTeam = (group, index, direction) => {
     if ((index === 0 && direction === -1) || (index === 3 && direction === 1)) return;
     const newGroups = { ...groups };
@@ -34,6 +29,10 @@ export default function GroupPredictor({ onComplete }) {
     arr[index + direction] = temp;
     newGroups[group] = arr;
     setGroups(newGroups);
+    
+    // Ensure selectedThirds only contains current third-place teams
+    const currentThirds = Object.values(newGroups).map(teams => teams[2]);
+    setSelectedThirds(prev => prev.filter(t => currentThirds.includes(t)));
   };
 
   const toggleThirdPlace = (team) => {

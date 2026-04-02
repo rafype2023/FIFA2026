@@ -1,3 +1,4 @@
+import Link from "next/link";
 
 export default function Success() {
   return (
@@ -9,9 +10,9 @@ export default function Success() {
           We have successfully saved your predictions for the 2026 World Cup.<br/>
           An email confirmation has been sent to your inbox.
         </p>
-        <a href="/">
+        <Link href="/">
            <button className="btn-primary">Submit Another Bracket</button>
-        </a>
+        </Link>
       </div>
     </main>
   );

@@ -103,6 +103,7 @@ export default function Home() {
   return (
     <main className="container">
       <div className="header">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/placeholder-logo.png" alt="FIFA Logo" style={{height: "80px", marginBottom: "1rem", borderRadius: "8px"}} onError={(e) => e.target.style.display="none"} />
         <h1>FIFA 2026 Predictions</h1>
         <p style={{color: "var(--text-muted)", marginTop: "1rem"}}>Predict the Group Stage and the 32-team Knockout bracket all the way to the Final!</p>
