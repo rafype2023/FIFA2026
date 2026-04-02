@@ -2,6 +2,7 @@ import dbConnect from "@/lib/mongodb";
 import Prediction from "@/models/Prediction";
 import Link from "next/link";
 import "./standings.css";
+import PointsInfographic from "./PointsInfographic";
 
 // Force dynamic rendering so it always fetches latest standings
 export const dynamic = 'force-dynamic';
@@ -110,9 +111,12 @@ export default async function Standings() {
         <div className="standings-header" style={{textAlign: "center", marginBottom: "2rem"}}>
           <h1 style={{color: "var(--primary)", fontSize: "3rem"}}>Tabla de Posiciones</h1>
           <p style={{color: "var(--text-muted)"}}>Puntuaciones actualizadas basadas en la "CLAVE DE FIFA 2026"</p>
-          <Link href="/">
-             <button className="btn-secondary" style={{marginTop: "1rem"}}>Volver</button>
-          </Link>
+          <div style={{display: "flex", justifyContent: "center", alignItems: "flex-start", gap: "2rem", flexWrap: "wrap", marginTop: "1.5rem"}}>
+            <PointsInfographic />
+            <Link href="/">
+               <button className="btn-secondary" style={{marginTop: "1rem"}}>Volver</button>
+            </Link>
+          </div>
         </div>
 
         <div className="glass-panel overflow-x" style={{padding: "1rem"}}>
