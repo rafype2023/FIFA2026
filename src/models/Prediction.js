@@ -8,6 +8,6 @@ const PredictionSchema = new mongoose.Schema({
   bracket: { type: Object, required: true },
   champion: { type: String, required: true },
   createdAt: { type: Date, default: Date.now }
-});
+}, { collection: "predictionFIFA" });
 
-export default mongoose.models.Prediction || mongoose.model("Prediction", PredictionSchema);
+export default mongoose.models.PredictionFIFA || mongoose.model("PredictionFIFA", PredictionSchema);
