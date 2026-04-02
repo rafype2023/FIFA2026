@@ -51,6 +51,11 @@ export default async function AdminDashboard() {
           <p style={{ color: "var(--text-muted)", margin: 0 }}>FIFA 2026 World Cup Predictions</p>
         </div>
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+          <Link href="/admin/report">
+            <button style={{ background: "rgba(0,180,100,0.2)", color: "#4eff9e", border: "1px solid rgba(0,200,100,0.3)", padding: "8px 16px", borderRadius: "8px", cursor: "pointer" }}>
+              🖨️ Reporte PDF
+            </button>
+          </Link>
           <Link href="/">
             <button style={{ background: "rgba(255,255,255,0.1)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)", padding: "8px 16px", borderRadius: "8px", cursor: "pointer" }}>
               🏠 Inicio

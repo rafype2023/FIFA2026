@@ -19,11 +19,12 @@ const POS_CLASSES = ["pos-1", "pos-2", "pos-3", "pos-4"];
 
 export default async function PlayerDetail({ params }) {
   await dbConnect();
+  const { id } = await params; // Next.js 15: params is a Promise
 
   let player;
   try {
-    const id = new mongoose.Types.ObjectId(params.id);
-    player = await Prediction.findById(id).lean();
+    const objectId = new mongoose.Types.ObjectId(id);
+    player = await Prediction.findById(objectId).lean();
   } catch {
     return (
       <main className="container">
