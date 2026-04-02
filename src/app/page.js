@@ -95,7 +95,7 @@ export default function Home() {
       window.location.href = "/success";
     } catch (error) {
       console.error(error);
-      alert("There was an error submitting your prediction. Please try again.");
+      alert("Hubo un error al someter tu predicción. Por favor, intenta de nuevo.");
       setIsSubmitting(false);
     }
   };
@@ -105,45 +105,45 @@ export default function Home() {
       <div className="header">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/placeholder-logo.png" alt="FIFA Logo" style={{height: "80px", marginBottom: "1rem", borderRadius: "8px"}} onError={(e) => e.target.style.display="none"} />
-        <h1>FIFA 2026 Predictions</h1>
-        <p style={{color: "var(--text-muted)", marginTop: "1rem"}}>Predict the Group Stage and the 32-team Knockout bracket all the way to the Final!</p>
+        <h1>Predicciones FIFA 2026</h1>
+        <p style={{color: "var(--text-muted)", marginTop: "1rem"}}>¡Predice la Fase de Grupos y la llave de 32 equipos hasta la Final!</p>
       </div>
 
       {step === 1 ? (
         <div className="glass-panel" style={{maxWidth: "500px", margin: "0 auto", padding: "2rem"}}>
-          <h2 style={{marginTop: 0, textAlign: "center"}}>Get Started</h2>
+          <h2 style={{marginTop: 0, textAlign: "center"}}>Comenzar</h2>
           <form onSubmit={handleStart}>
             <div className="form-group">
-              <label>Full Name</label>
+              <label>Nombre Completo</label>
               <input 
                 type="text" 
                 required 
                 value={userInfo.name}
                 onChange={e => setUserInfo({...userInfo, name: e.target.value})}
-                placeholder="e.g. Lionel Messi" 
+                placeholder="Ej. Lionel Messi" 
               />
             </div>
             <div className="form-group">
-              <label>Email Address</label>
+              <label>Correo Electrónico</label>
               <input 
                 type="email" 
                 required 
                 value={userInfo.email}
                 onChange={e => setUserInfo({...userInfo, email: e.target.value})}
-                placeholder="lionel@example.com" 
+                placeholder="lionel@ejemplo.com" 
               />
             </div>
             <div className="form-group">
-              <label>Field / Phone Number</label>
+              <label>Teléfono</label>
               <input 
                 type="tel" 
                 required 
                 value={userInfo.phone}
                 onChange={e => setUserInfo({...userInfo, phone: e.target.value})}
-                placeholder="e.g. +1 234 567 8900" 
+                placeholder="Ej. +1 787 555 1234" 
               />
             </div>
-            <button type="submit" className="btn-primary" style={{width: "100%", marginTop: "1rem"}}>Start Bracket</button>
+            <button type="submit" className="btn-primary" style={{width: "100%", marginTop: "1rem"}}>¡Llenar Bracket!</button>
           </form>
         </div>
       ) : step === 2 ? (
@@ -154,8 +154,8 @@ export default function Home() {
         <div className="glass-panel" style={{padding: "1rem"}}>
            {isSubmitting ? (
              <div style={{textAlign: "center", padding: "6rem 2rem"}}>
-                <h2 style={{color: "var(--primary)"}}>Submitting your predictions...</h2>
-                <p style={{color: "var(--text-muted)"}}>Please do not refresh the page</p>
+                <h2 style={{color: "var(--primary)"}}>Sometiendo tus predicciones...</h2>
+                <p style={{color: "var(--text-muted)"}}>Por favor, no refresques la página</p>
              </div>
            ) : (
              <BracketPredictor teams32={knockoutTeams} onComplete={handleCompleteBracket} />

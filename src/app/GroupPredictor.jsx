@@ -55,7 +55,7 @@ export default function GroupPredictor({ onComplete }) {
 
   const handleComplete = () => {
     if (selectedThirds.length !== 8) {
-      alert("Please select exactly 8 third-place teams to advance.");
+      alert("Por favor, selecciona exactamente 8 equipos en tercer lugar para avanzar.");
       return;
     }
     
@@ -63,7 +63,7 @@ export default function GroupPredictor({ onComplete }) {
       const teams32 = generateR32(groups, selectedThirds);
       onComplete({ picks: groups, thirdPlaces: selectedThirds }, teams32);
     } catch (err) {
-      alert("Error generating bracket: " + err.message);
+      alert("Error generando el bracket: " + err.message);
     }
   };
 
@@ -76,13 +76,13 @@ export default function GroupPredictor({ onComplete }) {
 
   return (
     <div className="group-stage-container">
-      <h2 style={{textAlign:"center", marginBottom:"0.5rem", color:"var(--primary)"}}>Group Stage Rankings</h2>
-      <p style={{textAlign:"center", color:"var(--text-muted)", marginBottom:"2rem"}}>Use the arrows to rank the teams 1st through 4th. The Top 2 from each group automatically advance!</p>
+      <h2 style={{textAlign:"center", marginBottom:"0.5rem", color:"var(--primary)"}}>Fase de Grupos</h2>
+      <p style={{textAlign:"center", color:"var(--text-muted)", marginBottom:"2rem"}}>Usa las flechas para ordenar los equipos del 1ro al 4to. ¡Los mejores 2 de cada grupo avanzan automáticamente!</p>
       
       <div className="groups-grid">
         {Object.entries(groups).map(([groupName, teams]) => (
           <div key={groupName} className="group-card">
-            <h3 style={{margin: "0 0 1rem 0", color: "var(--primary)"}}>Group {groupName}</h3>
+            <h3 style={{margin: "0 0 1rem 0", color: "var(--primary)"}}>Grupo {groupName}</h3>
             <div className="team-list">
               {teams.map((team, idx) => (
                 <div key={team} className={"group-team-row " + getSlotClass(idx)}>
@@ -100,8 +100,8 @@ export default function GroupPredictor({ onComplete }) {
       </div>
 
       <div className="thirds-selection glass-panel" style={{marginTop: "3rem", padding: "2rem"}}>
-        <h2 style={{textAlign:"center", color:"var(--primary)", marginTop: 0}}>Select Top 8 Third-Place Teams</h2>
-        <p style={{textAlign:"center", color:"var(--text-muted)"}}>Click to select EXACTLY 8 teams ({selectedThirds.length}/8 selected)</p>
+        <h2 style={{textAlign:"center", color:"var(--primary)", marginTop: 0}}>Selecciona los Mejores 8 Terceros Lugares</h2>
+        <p style={{textAlign:"center", color:"var(--text-muted)"}}>Haz clic para seleccionar EXACTAMENTE 8 equipos ({selectedThirds.length}/8 seleccionados)</p>
         
         <div className="thirds-grid">
           {currentThirds.map(({groupName, team}) => {
@@ -112,7 +112,7 @@ export default function GroupPredictor({ onComplete }) {
                 className={"third-team-card " + (isSelected ? "selected" : "")}
                 onClick={() => toggleThirdPlace(team)}
               >
-                <span>{team} <small style={{color:"var(--text-muted)"}}>(Group {groupName})</small></span>
+                <span>{team} <small style={{color:"var(--text-muted)"}}>(Grupo {groupName})</small></span>
                 {isSelected && <span className="checkmark">✓</span>}
               </div>
             );
@@ -127,7 +127,7 @@ export default function GroupPredictor({ onComplete }) {
           disabled={selectedThirds.length !== 8}
           style={{fontSize: "1.2rem", padding: "16px 32px"}}
         >
-          Proceed to Knockout Bracket ({selectedThirds.length === 8 ? "Ready" : `${8 - selectedThirds.length} remaining`})
+          Proceder a la Llave Eliminatoria ({selectedThirds.length === 8 ? "Listo" : `Faltan ${8 - selectedThirds.length}`})
         </button>
       </div>
     </div>

@@ -96,14 +96,14 @@ export default function BracketPredictor({ teams32, onComplete }) {
   return (
     <div style={{marginTop: "2rem"}}>
       <div className="bracket-container">
-        {renderRound("R32", "Round of 32")}
-        {renderRound("R16", "Round of 16")}
-        {renderRound("QF", "Quarter-finals")}
-        {renderRound("SF", "Semi-finals")}
+        {renderRound("R32", "Ronda de 32")}
+        {renderRound("R16", "Octavos de Final")}
+        {renderRound("QF", "Cuartos de Final")}
+        {renderRound("SF", "Semifinales")}
         {renderRound("FINAL", "Final")}
         
         <div className="bracket-column" style={{justifyContent: "center"}}>
-           <h3 style={{textAlign:"center", color:"gold"}}>Champion</h3>
+           <h3 style={{textAlign:"center", color:"gold"}}>Campeón</h3>
            <div className="champion-slot">
              {champion || "TBD"}
            </div>
@@ -117,7 +117,7 @@ export default function BracketPredictor({ teams32, onComplete }) {
           disabled={!champion}
           style={{fontSize: "1.2rem", padding: "16px 32px"}}
         >
-          Submit Prediction
+          Someter Predicción
         </button>
       </div>
     </div>
