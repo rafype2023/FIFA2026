@@ -48,38 +48,67 @@ export default function Home() {
       });
       if (!res.ok) throw new Error("Failed to save prediction");
 
-      let summaryText = `=== YOUR FIFA 2026 BRACKET ===\n\n`;
-      summaryText += `🏆 CHAMPION: ${champion}\n`;
-      
-      const runnerUp = bracket.FINAL[0].team1 === champion ? bracket.FINAL[0].team2 : bracket.FINAL[0].team1;
-      summaryText += `🥈 RUNNER-UP: ${runnerUp || "TBD"}\n\n`;
-      
-      summaryText += `-- ROUND OF 32 WINNERS --\n`;
-      bracket.R32.forEach(m => {
-        if(m.winner) summaryText += ` • ${m.winner} (def. ${m.winner === m.team1 ? m.team2 : m.team1})\n`;
-      });
-      
-      summaryText += `\n-- ROUND OF 16 WINNERS --\n`;
-      bracket.R16.forEach(m => {
-        if(m.winner) summaryText += ` • ${m.winner}\n`;
-      });
-      
-      summaryText += `\n-- QUARTER-FINALISTS --\n`;
-      bracket.QF.forEach(m => {
-         if(m.winner) summaryText += ` • ${m.winner}\n`;
-      });
-      
-      summaryText += `\n-- SEMI-FINALISTS --\n`;
-      bracket.SF.forEach(m => {
-         if(m.winner) summaryText += ` • ${m.winner}\n`;
-      });
-      
-      summaryText += `\n=== GROUP STAGE WINNERS ===\n`;
-      if(groupData) {
-        Object.entries(groupData).forEach(([g, teams]) => {
-           summaryText += `Group ${g}: 1. ${teams[0]} | 2. ${teams[1]}\n`;
+      let summaryText = `========================================\n`;
+      summaryText += `  PREDICCIONES FIFA 2026 - COPA MUNDIAL  \n`;
+      summaryText += `========================================\n\n`;
+      summaryText += `Jugador: ${userInfo.name}\n`;
+      summaryText += `Email:   ${userInfo.email}\n`;
+      summaryText += `========================================\n\n`;
+
+      // === FULL GROUP STAGE ===
+      summaryText += `=== FASE DE GRUPOS ===\n`;
+      summaryText += `(Posiciones 1ro al 4to por grupo)\n\n`;
+      if (groupData && groupData.picks) {
+        Object.entries(groupData.picks).forEach(([g, teams]) => {
+          summaryText += `Grupo ${g}:\n`;
+          summaryText += `  🥇 1ro: ${teams[0] || "—"}\n`;
+          summaryText += `  🥈 2do: ${teams[1] || "—"}\n`;
+          summaryText += `  🥉 3ro: ${teams[2] || "—"}\n`;
+          summaryText += `  4to: ${teams[3] || "—"}\n\n`;
         });
       }
+
+      // === THIRD PLACE SELECTIONS ===
+      if (groupData && groupData.thirdPlaces && groupData.thirdPlaces.length > 0) {
+        summaryText += `Los 8 mejores terceros lugares seleccionados:\n`;
+        groupData.thirdPlaces.forEach((team, i) => {
+          summaryText += `  ${i + 1}. ${team}\n`;
+        });
+        summaryText += `\n`;
+      }
+
+      summaryText += `========================================\n\n`;
+
+      // === KNOCKOUT BRACKET ===
+      summaryText += `=== LLAVE ELIMINATORIA ===\n\n`;
+
+      summaryText += `🏆 CAMPEÓN: ${champion}\n`;
+      const runnerUp = bracket.FINAL[0].team1 === champion ? bracket.FINAL[0].team2 : bracket.FINAL[0].team1;
+      summaryText += `🥈 FINALISTA: ${runnerUp || "TBD"}\n\n`;
+
+      summaryText += `-- SEMIFINALISTAS --\n`;
+      bracket.SF.forEach(m => {
+         if(m.winner) summaryText += `  • ${m.winner}\n`;
+      });
+
+      summaryText += `\n-- CUARTOS DE FINAL (Ganadores) --\n`;
+      bracket.QF.forEach(m => {
+         if(m.winner) summaryText += `  • ${m.winner}\n`;
+      });
+
+      summaryText += `\n-- OCTAVOS DE FINAL (Ganadores) --\n`;
+      bracket.R16.forEach(m => {
+        if(m.winner) summaryText += `  • ${m.winner}\n`;
+      });
+
+      summaryText += `\n-- RONDA DE 32 (Ganadores) --\n`;
+      bracket.R32.forEach(m => {
+        if(m.winner) summaryText += `  • ${m.winner} (vs ${m.winner === m.team1 ? m.team2 : m.team1})\n`;
+      });
+
+      summaryText += `\n========================================\n`;
+      summaryText += `Este correo es evidencia oficial de tus predicciones.\n`;
+      summaryText += `========================================\n`;
 
       const templateParams = {
         to_name: userInfo.name,
