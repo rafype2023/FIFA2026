@@ -93,7 +93,19 @@ export default function Home() {
         console.warn("EmailJS public key is missing or is a placeholder. Skipping email send.");
       }
 
-      window.location.href = "/success";
+      // Play the goal sound BEFORE navigating (must happen within the same click gesture)
+      try {
+        const audio = new Audio("/Gol.mp3");
+        audio.volume = 1.0;
+        await audio.play();
+      } catch (audioErr) {
+        console.warn("Audio play failed:", audioErr);
+      }
+
+      // Navigate after a short delay to let audio start
+      setTimeout(() => {
+        window.location.href = "/success";
+      }, 800);
     } catch (error) {
       console.error(error);
       alert("Hubo un error al someter tu predicción. Por favor, intenta de nuevo.");
