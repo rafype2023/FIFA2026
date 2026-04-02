@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { generateR32 } from "../lib/fifaRules";
 
 const INITIAL_GROUPS = {
   A: ["Mexico", "South Africa", "South Korea", "Czech Republic"],
@@ -58,22 +59,12 @@ export default function GroupPredictor({ onComplete }) {
       return;
     }
     
-    // Build 32 teams array deterministically
-    const firsts = Object.values(groups).map(g => g[0]);
-    const seconds = Object.values(groups).map(g => g[1]);
-    const thirds = [...selectedThirds];
-    
-    // We will distribute the 32 teams across 16 match pairs.
-    // Pair arrays: left side & right side
-    const pool1 = [...firsts, seconds[0], seconds[1], seconds[2], seconds[3]]; // 16 teams
-    const pool2 = [...seconds.slice(4), ...thirds]; // 16 teams
-    
-    const teams32 = [];
-    for(let i=0; i<16; i++) {
-       teams32.push({ team1: pool1[i], team2: pool2[i] });
+    try {
+      const teams32 = generateR32(groups, selectedThirds);
+      onComplete({ picks: groups, thirdPlaces: selectedThirds }, teams32);
+    } catch (err) {
+      alert("Error generating bracket: " + err.message);
     }
-    
-    onComplete({ picks: groups, thirdPlaces: selectedThirds }, teams32);
   };
 
   const getSlotClass = (index) => {

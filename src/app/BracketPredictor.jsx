@@ -1,25 +1,20 @@
 
 "use client";
 import React, { useState } from "react";
-
-const generateMatches = (count, prefix, teams32 = null) => {
-  return Array.from({ length: count }, (_, i) => ({
-    id: prefix + "-" + i,
-    team1: prefix === "R32" && teams32 ? teams32[i].team1 : null,
-    team2: prefix === "R32" && teams32 ? teams32[i].team2 : null,
-    winner: null,
-  }));
-};
+import { M89_M96_MATCHUPS, M97_M100_MATCHUPS, M101_M102_MATCHUPS, M104_FINAL } from "../lib/fifaRules";
 
 export default function BracketPredictor({ teams32, onComplete }) {
   const roundsOrder = ["R32", "R16", "QF", "SF", "FINAL"];
   
+  // Transform the definitions into state objects that hold winner/team1/team2 values
+  const initRound = (matchups) => matchups.map(m => ({ ...m, team1: null, team2: null, winner: null }));
+  
   const [bracket, setBracket] = useState({
-    R32: generateMatches(16, "R32", teams32),
-    R16: generateMatches(8, "R16"),
-    QF: generateMatches(4, "QF"),
-    SF: generateMatches(2, "SF"),
-    FINAL: generateMatches(1, "FINAL"),
+    R32: teams32, // Already properly formatted out of generateR32
+    R16: initRound(M89_M96_MATCHUPS),
+    QF: initRound(M97_M100_MATCHUPS),
+    SF: initRound(M101_M102_MATCHUPS),
+    FINAL: initRound(M104_FINAL)
   });
   
   const [champion, setChampion] = useState(null);
@@ -28,21 +23,44 @@ export default function BracketPredictor({ teams32, onComplete }) {
     if (!team) return;
     
     const newBracket = { ...bracket };
-    newBracket[round][matchIndex].winner = team;
+    const currentMatch = newBracket[round][matchIndex];
+    currentMatch.winner = team;
+    
+    // Cascading updates recursively clears forwards path
+    const clearForward = (startRound, matchId) => {
+      // Find where this match propagates
+      let rIdx = roundsOrder.indexOf(startRound);
+      if (rIdx === roundsOrder.length - 1) return; // Final
+      
+      const nextRound = roundsOrder[rIdx + 1];
+      const targetMatch = newBracket[nextRound].find(m => m.id === matchId);
+      if (targetMatch) {
+         if (targetMatch.winner) {
+           targetMatch.winner = null;
+           clearForward(nextRound, targetMatch.nextMatch);
+         }
+      }
+    };
     
     const currentRoundIdx = roundsOrder.indexOf(round);
     
     if (currentRoundIdx < roundsOrder.length - 1) {
       const nextRound = roundsOrder[currentRoundIdx + 1];
-      const nextMatchIndex = Math.floor(matchIndex / 2);
-      const isTeam1 = matchIndex % 2 === 0;
+      const nextMatchId = currentMatch.nextMatch;
       
-      if (isTeam1) {
-        newBracket[nextRound][nextMatchIndex].team1 = team;
-      } else {
-        newBracket[nextRound][nextMatchIndex].team2 = team;
+      const targetMatchIndex = newBracket[nextRound].findIndex(m => m.id === nextMatchId);
+      if (targetMatchIndex > -1) {
+         if (currentMatch.isTeamA) {
+            newBracket[nextRound][targetMatchIndex].team1 = team;
+         } else {
+            newBracket[nextRound][targetMatchIndex].team2 = team;
+         }
+         
+         if (newBracket[nextRound][targetMatchIndex].winner) {
+            newBracket[nextRound][targetMatchIndex].winner = null;
+            clearForward(nextRound, newBracket[nextRound][targetMatchIndex].nextMatch);
+         }
       }
-      newBracket[nextRound][nextMatchIndex].winner = null;
       setChampion(null); 
     } else {
       setChampion(team);
