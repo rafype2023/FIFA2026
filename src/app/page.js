@@ -28,6 +28,13 @@ export default function Home() {
 
   const handleCompleteBracket = async (bracket, champion) => {
     setIsSubmitting(true);
+
+    // MUST call audio.play() synchronously here — before any await.
+    // Any await breaks the browser's user-gesture chain and silently blocks autoplay.
+    const golAudio = new Audio("/Gol.mp3");
+    golAudio.volume = 1.0;
+    const audioPromise = golAudio.play().catch(err => console.warn("Audio blocked:", err));
+
     try {
       const res = await fetch("/api/submit", {
         method: "POST",
@@ -93,19 +100,11 @@ export default function Home() {
         console.warn("EmailJS public key is missing or is a placeholder. Skipping email send.");
       }
 
-      // Play the goal sound BEFORE navigating (must happen within the same click gesture)
-      try {
-        const audio = new Audio("/Gol.mp3");
-        audio.volume = 1.0;
-        await audio.play();
-      } catch (audioErr) {
-        console.warn("Audio play failed:", audioErr);
-      }
-
-      // Navigate after a short delay to let audio start
+      // Wait for audio to start before navigating
+      await audioPromise;
       setTimeout(() => {
         window.location.href = "/success";
-      }, 800);
+      }, 2000);
     } catch (error) {
       console.error(error);
       alert("Hubo un error al someter tu predicción. Por favor, intenta de nuevo.");
