@@ -44,11 +44,11 @@ export default async function Standings() {
       let ptsSF = 0;
       let ptsFinal = 0;
 
-      if (masterKey.groupPicks && player.groupPicks) {
+      if (masterKey.groupPicks && player.groupPicks && typeof masterKey.groupPicks === "object") {
         Object.keys(masterKey.groupPicks).forEach(groupLetter => {
            const masterArray = masterKey.groupPicks[groupLetter];
            const playerArray = player.groupPicks[groupLetter];
-           if (masterArray && playerArray) {
+           if (Array.isArray(masterArray) && Array.isArray(playerArray)) {
               masterArray.forEach((teamMaster, i) => {
                  if (playerArray[i] === teamMaster) {
                    ptsGrupos += 1;
@@ -60,10 +60,10 @@ export default async function Standings() {
 
       const scoreRound = (roundName, pointsPerMatch) => {
           let pts = 0;
-          const masterRound = masterKey.bracket[roundName];
-          const playerRound = player.bracket?.[roundName]; // Optional chaining in case older structure is missing 
+          const masterRound = masterKey.bracket?.[roundName];
+          const playerRound = player.bracket?.[roundName];
           
-          if (masterRound && playerRound) {
+          if (Array.isArray(masterRound) && Array.isArray(playerRound)) {
               masterRound.forEach((masterMatch) => {
                   if (!masterMatch.winner) return; 
 
