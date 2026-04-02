@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import emailjs from "@emailjs/browser";
 import BracketPredictor from "./BracketPredictor";
 import GroupPredictor from "./GroupPredictor";
+import Link from "next/link";
 
 export default function Home() {
   const [userInfo, setUserInfo] = useState({ name: "", email: "", phone: "" });
@@ -107,6 +108,11 @@ export default function Home() {
         <img src="/placeholder-logo.png" alt="FIFA Logo" style={{height: "80px", marginBottom: "1rem", borderRadius: "8px"}} onError={(e) => e.target.style.display="none"} />
         <h1>Predicciones FIFA 2026</h1>
         <p style={{color: "var(--text-muted)", marginTop: "1rem"}}>¡Predice la Fase de Grupos y la llave de 32 equipos hasta la Final!</p>
+        <Link href="/standings" style={{display: "inline-block", marginTop: "1.5rem"}}>
+          <button style={{background: "rgba(255,255,255,0.1)", color: "#fff", border: "1px solid rgba(255,255,255,0.3)", padding: "10px 20px", borderRadius: "8px", cursor: "pointer"}}>
+            Ver Tabla de Posiciones
+          </button>
+        </Link>
       </div>
 
       {step === 1 ? (

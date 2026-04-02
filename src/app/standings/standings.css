@@ -1,0 +1,67 @@
+.standings-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.standings-table th {
+  color: var(--primary);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.standings-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--foreground);
+}
+
+.standings-table tr:hover td {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-accent {
+  color: gold;
+  font-size: 1.1rem;
+}
+
+.first-place td {
+  color: gold;
+}
+
+.first-place .text-accent {
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.overflow-x {
+  overflow-x: auto;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--foreground);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
