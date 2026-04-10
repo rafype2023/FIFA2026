@@ -71,6 +71,9 @@ export default function BracketPredictor({ teams32, onComplete }) {
 
   const renderMatch = (match, round, index) => (
     <div key={match.id} className="matchup">
+      <span style={{position: "absolute", top: "-15px", left: "5px", fontSize: "0.65rem", color: "var(--text-muted)", zIndex: 1, fontWeight: "bold"}}>
+        {match.id}
+      </span>
       <div 
         className={"team-slot " + (match.winner === match.team1 ? "selected" : "")} 
         onClick={() => advanceTeam(round, index, match.team1)}
