@@ -4953,31 +4953,31 @@ export const ANNEXE_C = {
 };
 
 export const M73_M88_MATCHUPS = [
-  { id: "M73", teamA: "2A", teamB: "2B", nextMatch: "M90", isTeamA: true },
   { id: "M74", teamA: "1E", teamB: "3_ABCDF", nextMatch: "M89", isTeamA: true },
-  { id: "M75", teamA: "1F", teamB: "2C", nextMatch: "M90", isTeamA: false },
-  { id: "M76", teamA: "1C", teamB: "2F", nextMatch: "M91", isTeamA: true },
   { id: "M77", teamA: "1I", teamB: "3_CDFGH", nextMatch: "M89", isTeamA: false },
+  { id: "M73", teamA: "2A", teamB: "2B", nextMatch: "M90", isTeamA: true },
+  { id: "M75", teamA: "1F", teamB: "2C", nextMatch: "M90", isTeamA: false },
+  { id: "M83", teamA: "2K", teamB: "2L", nextMatch: "M93", isTeamA: true },
+  { id: "M84", teamA: "1H", teamB: "2J", nextMatch: "M93", isTeamA: false },
+  { id: "M81", teamA: "1D", teamB: "3_BEFIJ", nextMatch: "M94", isTeamA: true },
+  { id: "M82", teamA: "1G", teamB: "3_AEHIJ", nextMatch: "M94", isTeamA: false },
+  { id: "M76", teamA: "1C", teamB: "2F", nextMatch: "M91", isTeamA: true },
   { id: "M78", teamA: "2E", teamB: "2I", nextMatch: "M91", isTeamA: false },
   { id: "M79", teamA: "1A", teamB: "3_CEFHI", nextMatch: "M92", isTeamA: true },
   { id: "M80", teamA: "1L", teamB: "3_EHIJK", nextMatch: "M92", isTeamA: false },
-  { id: "M81", teamA: "1D", teamB: "3_BEFIJ", nextMatch: "M94", isTeamA: true },
-  { id: "M82", teamA: "1G", teamB: "3_AEHIJ", nextMatch: "M94", isTeamA: false },
-  { id: "M83", teamA: "2K", teamB: "2L", nextMatch: "M93", isTeamA: true },
-  { id: "M84", teamA: "1H", teamB: "2J", nextMatch: "M93", isTeamA: false },
-  { id: "M85", teamA: "1B", teamB: "3_EFGIJ", nextMatch: "M96", isTeamA: true },
   { id: "M86", teamA: "1J", teamB: "2H", nextMatch: "M95", isTeamA: true },
-  { id: "M87", teamA: "1K", teamB: "3_DEIJL", nextMatch: "M96", isTeamA: false },
-  { id: "M88", teamA: "2D", teamB: "2G", nextMatch: "M95", isTeamA: false }
+  { id: "M88", teamA: "2D", teamB: "2G", nextMatch: "M95", isTeamA: false },
+  { id: "M85", teamA: "1B", teamB: "3_EFGIJ", nextMatch: "M96", isTeamA: true },
+  { id: "M87", teamA: "1K", teamB: "3_DEIJL", nextMatch: "M96", isTeamA: false }
 ];
 
 export const M89_M96_MATCHUPS = [
   { id: "M89", winM_A: "M74", winM_B: "M77", nextMatch: "M97", isTeamA: true },
   { id: "M90", winM_A: "M73", winM_B: "M75", nextMatch: "M97", isTeamA: false },
-  { id: "M91", winM_A: "M76", winM_B: "M78", nextMatch: "M99", isTeamA: true },
-  { id: "M92", winM_A: "M79", winM_B: "M80", nextMatch: "M99", isTeamA: false },
   { id: "M93", winM_A: "M83", winM_B: "M84", nextMatch: "M98", isTeamA: true },
   { id: "M94", winM_A: "M81", winM_B: "M82", nextMatch: "M98", isTeamA: false },
+  { id: "M91", winM_A: "M76", winM_B: "M78", nextMatch: "M99", isTeamA: true },
+  { id: "M92", winM_A: "M79", winM_B: "M80", nextMatch: "M99", isTeamA: false },
   { id: "M95", winM_A: "M86", winM_B: "M88", nextMatch: "M100", isTeamA: true },
   { id: "M96", winM_A: "M85", winM_B: "M87", nextMatch: "M100", isTeamA: false }
 ];
