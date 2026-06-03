@@ -86,6 +86,11 @@ export default function Home() {
       const runnerUp = bracket.FINAL[0].team1 === champion ? bracket.FINAL[0].team2 : bracket.FINAL[0].team1;
       summaryText += `🥈 FINALISTA: ${runnerUp || "TBD"}\n\n`;
 
+      const thirdPlace = bracket.THIRD?.[0]?.winner;
+      const fourthPlace = thirdPlace ? (bracket.THIRD[0].team1 === thirdPlace ? bracket.THIRD[0].team2 : bracket.THIRD[0].team1) : null;
+      summaryText += `🥉 TERCER LUGAR: ${thirdPlace || "TBD"}\n`;
+      summaryText += `🎖️ CUARTO LUGAR: ${fourthPlace || "TBD"}\n\n`;
+
       summaryText += `-- SEMIFINALISTAS --\n`;
       bracket.SF.forEach(m => {
          if(m.winner) summaryText += `  • ${m.winner}\n`;

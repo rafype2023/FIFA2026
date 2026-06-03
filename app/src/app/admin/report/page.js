@@ -12,6 +12,7 @@ const ROUNDS = {
   R16: "Octavos de Final",
   QF: "Cuartos de Final",
   SF: "Semifinales",
+  THIRD: "Tercer Lugar",
   FINAL: "Final",
 };
 

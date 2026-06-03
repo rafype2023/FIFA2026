@@ -11,6 +11,7 @@ const ROUND_LABELS = {
   R16: "Octavos de Final",
   QF: "Cuartos de Final",
   SF: "Semifinales",
+  THIRD: "Tercer Lugar",
   FINAL: "Final",
 };
 
@@ -50,7 +51,7 @@ export default async function PlayerDetail({ params }) {
   const groups = player.groupPicks?.picks || {};
   const thirdPlaces = player.groupPicks?.thirdPlaces || [];
   const bracket = player.bracket || {};
-  const rounds = ["R32", "R16", "QF", "SF", "FINAL"];
+  const rounds = ["R32", "R16", "QF", "SF", "THIRD", "FINAL"];
 
   return (
     <main className="container">

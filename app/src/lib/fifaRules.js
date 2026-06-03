@@ -4998,6 +4998,11 @@ export const M104_FINAL = [
   { id: "M104", winM_A: "M101", winM_B: "M102", nextMatch: null }
 ];
 
+export const M103_THIRD_PLACE = [
+  { id: "M103", loseM_A: "M101", loseM_B: "M102", nextMatch: null }
+];
+
+
 export const generateR32 = (picks, thirdPlaces) => {
   // thirdPlaces is an array of strings (team names)
   // picks is an object mapping group letter -> array of teams
