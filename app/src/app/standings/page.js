@@ -85,12 +85,13 @@ export default async function Standings() {
       ptsR16 = scoreRound("R16", 1);
       ptsQF = scoreRound("QF", 1);
       ptsSF = scoreRound("SF", 2);
+      const ptsThird = scoreRound("THIRD", 2);
 
       if (masterKey.champion && player.champion === masterKey.champion) {
          ptsFinal = 3;
       }
 
-      const totalPts = ptsGrupos + ptsR32 + ptsR16 + ptsQF + ptsSF + ptsFinal;
+      const totalPts = ptsGrupos + ptsR32 + ptsR16 + ptsQF + ptsSF + ptsThird + ptsFinal;
 
       return {
         name: player.name,
@@ -99,6 +100,7 @@ export default async function Standings() {
         ptsR16,
         ptsQF,
         ptsSF,
+        ptsThird,
         ptsFinal,
         totalPts
       };
@@ -120,7 +122,7 @@ export default async function Standings() {
         </div>
 
         <div className="glass-panel overflow-x" style={{padding: "1rem"}}>
-          <table className="standings-table">
+           <table className="standings-table">
             <thead>
               <tr>
                 <th className="text-center">#</th>
@@ -130,6 +132,7 @@ export default async function Standings() {
                 <th className="text-center">Octavos</th>
                 <th className="text-center">Cuartos</th>
                 <th className="text-center">Semis</th>
+                <th className="text-center">3er Lugar</th>
                 <th className="text-center">Campeón</th>
                 <th className="text-center text-accent">Total</th>
               </tr>
@@ -137,7 +140,7 @@ export default async function Standings() {
             <tbody>
               {standings.length === 0 ? (
                 <tr>
-                  <td colSpan="9" style={{textAlign: "center", padding: "2rem", color: "var(--text-muted)"}}>No hay jugadores registrados todavía.</td>
+                  <td colSpan="10" style={{textAlign: "center", padding: "2rem", color: "var(--text-muted)"}}>No hay jugadores registrados todavía.</td>
                 </tr>
               ) : (
                 standings.map((p, index) => (
@@ -149,6 +152,7 @@ export default async function Standings() {
                     <td className="text-center">{p.ptsR16}</td>
                     <td className="text-center">{p.ptsQF}</td>
                     <td className="text-center">{p.ptsSF}</td>
+                    <td className="text-center">{p.ptsThird}</td>
                     <td className="text-center">{p.ptsFinal}</td>
                     <td className="text-center text-accent font-bold">{p.totalPts}</td>
                   </tr>
