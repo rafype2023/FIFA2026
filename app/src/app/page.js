@@ -1,10 +1,11 @@
 
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
 import BracketPredictor from "./BracketPredictor";
 import GroupPredictor from "./GroupPredictor";
 import Link from "next/link";
+import Carousel from "./Carousel";
 
 export default function Home() {
   const [userInfo, setUserInfo] = useState({ name: "", email: "", phone: "" });
@@ -12,6 +13,37 @@ export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [groupData, setGroupData] = useState(null);
   const [knockoutTeams, setKnockoutTeams] = useState(null);
+  const [isPastCutoff, setIsPastCutoff] = useState(false);
+  const [timeLeft, setTimeLeft] = useState("");
+
+  useEffect(() => {
+    const cutoffDate = new Date("2026-06-11T15:00:00");
+    const checkTime = () => {
+      const now = new Date();
+      const diff = cutoffDate - now;
+      const urlParams = new URLSearchParams(window.location.search);
+      const forceCarousel = urlParams.get("force_carousel") === "true";
+
+      if (forceCarousel || diff <= 0) {
+        setIsPastCutoff(true);
+        setTimeLeft("");
+      } else {
+        setIsPastCutoff(false);
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        let timerStr = "";
+        if (days > 0) timerStr += `${days}d `;
+        timerStr += `${hours}h ${minutes}m ${seconds}s`;
+        setTimeLeft(timerStr);
+      }
+    };
+    checkTime();
+    const interval = setInterval(checkTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleStart = (e) => {
     e.preventDefault();
@@ -158,45 +190,54 @@ export default function Home() {
             Ver Tabla de Posiciones
           </button>
         </Link>
+        {!isPastCutoff && timeLeft && (
+          <div style={{color: "#ff4c4c", marginTop: "1rem", fontWeight: "bold", fontSize: "1.1rem"}}>
+            Te quedan : {timeLeft} , para jugar.
+          </div>
+        )}
       </div>
 
       {step === 1 ? (
-        <div className="glass-panel" style={{maxWidth: "500px", margin: "0 auto", padding: "2rem"}}>
-          <h2 style={{marginTop: 0, textAlign: "center"}}>Comenzar</h2>
-          <form onSubmit={handleStart}>
-            <div className="form-group">
-              <label>Nombre Completo</label>
-              <input 
-                type="text" 
-                required 
-                value={userInfo.name}
-                onChange={e => setUserInfo({...userInfo, name: e.target.value})}
-                placeholder="Ej. Lionel Messi" 
-              />
-            </div>
-            <div className="form-group">
-              <label>Correo Electrónico</label>
-              <input 
-                type="email" 
-                required 
-                value={userInfo.email}
-                onChange={e => setUserInfo({...userInfo, email: e.target.value})}
-                placeholder="lionel@ejemplo.com" 
-              />
-            </div>
-            <div className="form-group">
-              <label>Teléfono</label>
-              <input 
-                type="tel" 
-                required 
-                value={userInfo.phone}
-                onChange={e => setUserInfo({...userInfo, phone: e.target.value})}
-                placeholder="Ej. +1 787 555 1234" 
-              />
-            </div>
-            <button type="submit" className="btn-primary" style={{width: "100%", marginTop: "1rem"}}>¡Llenar Bracket!</button>
-          </form>
-        </div>
+        isPastCutoff ? (
+          <Carousel />
+        ) : (
+          <div className="glass-panel" style={{maxWidth: "500px", margin: "0 auto", padding: "2rem"}}>
+            <h2 style={{marginTop: 0, textAlign: "center"}}>Comenzar</h2>
+            <form onSubmit={handleStart}>
+              <div className="form-group">
+                <label>Nombre Completo</label>
+                <input 
+                  type="text" 
+                  required 
+                  value={userInfo.name}
+                  onChange={e => setUserInfo({...userInfo, name: e.target.value})}
+                  placeholder="Ej. Lionel Messi" 
+                />
+              </div>
+              <div className="form-group">
+                <label>Correo Electrónico</label>
+                <input 
+                  type="email" 
+                  required 
+                  value={userInfo.email}
+                  onChange={e => setUserInfo({...userInfo, email: e.target.value})}
+                  placeholder="lionel@ejemplo.com" 
+                />
+              </div>
+              <div className="form-group">
+                <label>Teléfono</label>
+                <input 
+                  type="tel" 
+                  required 
+                  value={userInfo.phone}
+                  onChange={e => setUserInfo({...userInfo, phone: e.target.value})}
+                  placeholder="Ej. +1 787 555 1234" 
+                />
+              </div>
+              <button type="submit" className="btn-primary" style={{width: "100%", marginTop: "1rem"}}>¡Llenar Bracket!</button>
+            </form>
+          </div>
+        )
       ) : step === 2 ? (
         <div className="glass-panel" style={{padding: "1rem"}}>
            <GroupPredictor onComplete={handleGroupComplete} />
