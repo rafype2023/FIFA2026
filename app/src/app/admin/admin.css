@@ -252,3 +252,171 @@
 @media (max-width: 768px) {
   .bar-label { min-width: 100px; }
 }
+
+/* 3D Chart Styling */
+.chart-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.chart-tab-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-muted);
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.chart-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.chart-tab-btn.active {
+  background: var(--primary);
+  color: #000;
+  border-color: var(--primary);
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.chart-3d-container {
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 2.5rem 2rem;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-3d-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), #00b8ff);
+}
+
+.chart-3d-stage {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  width: 100%;
+  height: 280px;
+  margin-top: 2.5rem;
+  border-bottom: 4px solid rgba(255,255,255,0.1);
+  padding-bottom: 1px;
+  position: relative;
+  perspective: 800px;
+}
+
+.bar-3d-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 15%;
+  position: relative;
+}
+
+.bar-3d-wrapper {
+  position: relative;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 200px;
+}
+
+.bar-3d-front {
+  position: relative;
+  width: 35px;
+  background: linear-gradient(to top, rgba(0, 255, 136, 0.8), rgba(0, 184, 255, 0.8));
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: -5px 5px 15px rgba(0,0,0,0.4);
+  transition: height 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.bar-3d-side {
+  position: absolute;
+  left: 35px;
+  width: 15px;
+  background: linear-gradient(to top, rgba(0, 150, 255, 0.8), rgba(0, 80, 180, 0.8));
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: none;
+  transform: skewY(-30deg);
+  transform-origin: top left;
+  transition: height 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.bar-3d-top {
+  position: absolute;
+  width: 35px;
+  height: 9px;
+  background: rgba(0, 255, 136, 1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: none;
+  transform: skewX(-60deg);
+  transform-origin: bottom left;
+  transition: bottom 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.bar-3d-value {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%, -10px);
+  font-weight: bold;
+  color: var(--primary);
+  font-size: 1rem;
+  text-shadow: 0 0 8px var(--primary-glow);
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards 0.8s;
+}
+
+.bar-3d-label {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: center;
+  word-break: break-word;
+  max-width: 90px;
+  transform: rotate(-15deg);
+  transition: all 0.3s ease;
+}
+
+.bar-3d-group:hover .bar-3d-label {
+  color: var(--primary);
+  transform: rotate(0deg) scale(1.1);
+}
+
+.bar-3d-group:hover .bar-3d-front {
+  background: linear-gradient(to top, #00ff88, #00b8ff);
+  box-shadow: -8px 8px 20px var(--primary-glow);
+}
+
+.bar-3d-group:hover .bar-3d-top {
+  background: #00ff88;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+

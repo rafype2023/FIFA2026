@@ -50,7 +50,12 @@ export default async function AdminDashboard() {
           <h1>⚙️ Panel de Administrador</h1>
           <p style={{ color: "var(--text-muted)", margin: 0 }}>FIFA 2026 World Cup Predictions</p>
         </div>
-        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
+          <Link href="/admin/charts">
+            <button style={{ background: "rgba(0,184,255,0.2)", color: "#00b8ff", border: "1px solid rgba(0,184,255,0.3)", padding: "8px 16px", borderRadius: "8px", cursor: "pointer" }}>
+              📊 Gráficas 3D
+            </button>
+          </Link>
           <Link href="/admin/report">
             <button style={{ background: "rgba(0,180,100,0.2)", color: "#4eff9e", border: "1px solid rgba(0,200,100,0.3)", padding: "8px 16px", borderRadius: "8px", cursor: "pointer" }}>
               🖨️ Reporte PDF
