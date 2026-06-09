@@ -2,7 +2,13 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
-export default function ChartsDashboard({ top6R32Winners, top6R32Qualified }) {
+export default function ChartsDashboard({ 
+  top6R32Winners, 
+  top6R32Qualified,
+  top6Champions = [],
+  top6RunnersUp = [],
+  top6ThirdPlaces = []
+}) {
   const [activeTab, setActiveTab] = useState("winners");
   const [animate, setAnimate] = useState(false);
 
@@ -15,8 +21,35 @@ export default function ChartsDashboard({ top6R32Winners, top6R32Qualified }) {
     return () => clearTimeout(timer);
   }, [activeTab]);
 
-  const currentData = activeTab === "winners" ? top6R32Winners : top6R32Qualified;
+  const currentData = (() => {
+    switch (activeTab) {
+      case "winners": return top6R32Winners;
+      case "qualified": return top6R32Qualified;
+      case "champions": return top6Champions;
+      case "runners": return top6RunnersUp;
+      case "third": return top6ThirdPlaces;
+      default: return top6R32Winners;
+    }
+  })();
+
   const maxVal = currentData.length > 0 ? Math.max(...currentData.map(([_, count]) => count), 1) : 1;
+
+  const getHeadingText = () => {
+    switch (activeTab) {
+      case "winners":
+        return "Top 6 Equipos Más Seleccionados para Ganar en la Ronda de 32";
+      case "qualified":
+        return "Top 6 Equipos Más Seleccionados para Clasificar en la Fase de Grupos";
+      case "champions":
+        return "Top 6 Equipos Más Seleccionados para ser Campeón 🏆";
+      case "runners":
+        return "Top 6 Equipos Más Seleccionados para ser Subcampeón 🥈";
+      case "third":
+        return "Top 6 Equipos Más Seleccionados para quedar en Tercer Lugar 🥉";
+      default:
+        return "";
+    }
+  };
 
   return (
     <main className="container">
@@ -42,22 +75,38 @@ export default function ChartsDashboard({ top6R32Winners, top6R32Qualified }) {
           className={`chart-tab-btn ${activeTab === "winners" ? "active" : ""}`}
           onClick={() => setActiveTab("winners")}
         >
-          🏆 Ganadores Ronda de 32 (Avance a Octavos)
+          🗳️ R32 Ganadores
         </button>
         <button
           className={`chart-tab-btn ${activeTab === "qualified" ? "active" : ""}`}
           onClick={() => setActiveTab("qualified")}
         >
-          ⚽ Clasificados a Ronda de 32 (Fase de Grupos)
+          ⚽ R32 Clasificados
+        </button>
+        <button
+          className={`chart-tab-btn ${activeTab === "champions" ? "active" : ""}`}
+          onClick={() => setActiveTab("champions")}
+        >
+          🏆 Campeón
+        </button>
+        <button
+          className={`chart-tab-btn ${activeTab === "runners" ? "active" : ""}`}
+          onClick={() => setActiveTab("runners")}
+        >
+          🥈 Subcampeón
+        </button>
+        <button
+          className={`chart-tab-btn ${activeTab === "third" ? "active" : ""}`}
+          onClick={() => setActiveTab("third")}
+        >
+          🥉 Tercer Lugar
         </button>
       </div>
 
       {/* 3D Chart Panel */}
       <div className="chart-3d-container">
         <h2 style={{ color: "var(--primary)", marginTop: 0, textAlign: "center" }}>
-          {activeTab === "winners"
-            ? "Top 6 Equipos Más Seleccionados para Ganar en la Ronda de 32"
-            : "Top 6 Equipos Más Seleccionados para Clasificar en la Fase de Grupos"}
+          {getHeadingText()}
         </h2>
         <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", margin: "0 0 1rem 0", textAlign: "center" }}>
           Muestra los 6 equipos que más votos recibieron de los participantes para esta ronda.

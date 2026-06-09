@@ -43,10 +43,35 @@ export default async function AdminChartsPage() {
   const r32QualifiedCounts = countOccurrences(r32Qualified);
   const top6R32Qualified = getTop6(r32QualifiedCounts);
 
+  // 3. Campeones
+  const champions = players.map(p => p.champion).filter(Boolean);
+  const championCounts = countOccurrences(champions);
+  const top6Champions = getTop6(championCounts);
+
+  // 4. Subcampeones
+  const runnersUp = players.map(p => {
+    const final = p.bracket?.FINAL?.[0];
+    if (!final || !final.winner) return null;
+    return final.winner === final.team1 ? final.team2 : final.team1;
+  }).filter(Boolean);
+  const runnerUpCounts = countOccurrences(runnersUp);
+  const top6RunnersUp = getTop6(runnerUpCounts);
+
+  // 5. Tercer Lugar
+  const thirdPlaces = players.map(p => {
+    const thirdMatch = p.bracket?.THIRD?.[0];
+    return thirdMatch?.winner;
+  }).filter(Boolean);
+  const thirdPlaceCounts = countOccurrences(thirdPlaces);
+  const top6ThirdPlaces = getTop6(thirdPlaceCounts);
+
   return (
     <ChartsDashboard 
       top6R32Winners={top6R32Winners} 
       top6R32Qualified={top6R32Qualified} 
+      top6Champions={top6Champions}
+      top6RunnersUp={top6RunnersUp}
+      top6ThirdPlaces={top6ThirdPlaces}
     />
   );
 }
