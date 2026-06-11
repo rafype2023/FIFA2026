@@ -2,15 +2,15 @@
 import React, { useState, useEffect } from "react";
 
 const IMAGES = [
-  "/Notas/ChatGPT Image Jun 9, 2026 at 09_23_29 AM (1).png",
-  "/Notas/ChatGPT Image Jun 9, 2026 at 09_23_29 AM (2).png",
-  "/Notas/ChatGPT Image Jun 9, 2026 at 09_23_29 AM (3).png",
-  "/Notas/ChatGPT Image Jun 9, 2026 at 09_23_29 AM (4).png",
-  "/Notas/ChatGPT Image Jun 9, 2026 at 09_23_29 AM (5).png",
-  "/Notas/ChatGPT Image Jun 9, 2026 at 09_23_31 AM (6).png",
-  "/Notas/ChatGPT Image Jun 9, 2026 at 09_23_31 AM (7).png",
-  "/Notas/ChatGPT Image Jun 9, 2026 at 09_23_32 AM (8).png",
-  "/Notas/ChatGPT Image Jun 9, 2026 at 09_23_32 AM (9).png",
+  "/Notas/nota1.png",
+  "/Notas/nota2.png",
+  "/Notas/nota3.png",
+  "/Notas/nota4.png",
+  "/Notas/nota5.png",
+  "/Notas/nota6.png",
+  "/Notas/nota7.png",
+  "/Notas/nota8.png",
+  "/Notas/nota9.png",
 ];
 
 export default function Carousel() {
