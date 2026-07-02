@@ -130,6 +130,26 @@
   display: inline-block;
 }
 
+.player-card .player-payment {
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.player-card .player-payment.deudor {
+  background: rgba(255, 77, 77, 0.1);
+  border: 1px solid rgba(255, 77, 77, 0.25);
+  color: #ff4d4d;
+}
+
+.player-card .player-payment.pagado {
+  background: rgba(78, 255, 158, 0.1);
+  border: 1px solid rgba(78, 255, 158, 0.25);
+  color: #4eff9e;
+}
+
 /* Player detail page */
 .player-detail-header {
   background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));

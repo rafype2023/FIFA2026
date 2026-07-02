@@ -2,6 +2,8 @@ import dbConnect from "@/lib/mongodb";
 import Prediction from "@/models/Prediction";
 import Link from "next/link";
 import "./admin.css";
+import CopyEmailsButton from "./CopyEmailsButton";
+import { getPlayerPayment } from "@/lib/paymentHelper";
 
 export const dynamic = 'force-dynamic';
 
@@ -22,6 +24,7 @@ export default async function AdminDashboard() {
 
   const players = allPlayers.filter(p => p.name?.trim().toUpperCase() !== "CLAVE DE FIFA 2026");
   const total = players.length;
+  const emailList = players.map(p => p.email).filter(Boolean).join(", ");
 
   // === STATS ===
   const champions = players.map(p => p.champion).filter(Boolean);
@@ -90,6 +93,8 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
+      <CopyEmailsButton emails={emailList} />
+
       {/* Champions Chart */}
       <div className="glass-panel" style={{ padding: "1.5rem", marginBottom: "2rem" }}>
         <h2 style={{ color: "var(--primary)", marginTop: 0 }}>🏆 Campeón Más Seleccionado</h2>
@@ -148,16 +153,27 @@ export default async function AdminDashboard() {
       {/* Player List */}
       <h2 style={{ color: "var(--primary)", marginBottom: "1rem" }}>👥 Todos los Jugadores ({total})</h2>
       <div className="player-grid">
-        {players.map(p => (
-          <Link key={p._id.toString()} href={`/admin/players/${p._id}`} className="player-card">
-            <div className="player-name">{p.name}</div>
-            <div className="player-meta">{p.email}</div>
-            <div className="player-meta">{p.createdAt ? new Date(p.createdAt).toLocaleDateString("es-PR") : ""}</div>
-            {p.champion && (
-              <div className="player-champion">🏆 {p.champion}</div>
-            )}
-          </Link>
-        ))}
+        {players.map(p => {
+          const payment = getPlayerPayment(p);
+          return (
+            <Link key={p._id.toString()} href={`/admin/players/${p._id}`} className="player-card">
+              <div className="player-name">{p.name}</div>
+              <div className="player-meta">{p.email}</div>
+              <div className="player-meta">{p.createdAt ? new Date(p.createdAt).toLocaleDateString("es-PR") : ""}</div>
+              
+              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.75rem", alignItems: "center" }}>
+                {payment.isDeudor ? (
+                  <span className="player-payment deudor">⚠️ DEUDOR</span>
+                ) : (
+                  <span className="player-payment pagado">💰 {payment.label}</span>
+                )}
+                {p.champion && (
+                  <span className="player-champion" style={{ marginTop: 0 }}>🏆 {p.champion}</span>
+                )}
+              </div>
+            </Link>
+          );
+        })}
         {total === 0 && (
           <p style={{ color: "var(--text-muted)", gridColumn: "1/-1" }}>No hay jugadores registrados aún.</p>
         )}

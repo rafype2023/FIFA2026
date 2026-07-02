@@ -3,6 +3,7 @@ import Prediction from "@/models/Prediction";
 import Link from "next/link";
 import "../../admin.css";
 import mongoose from "mongoose";
+import { getPlayerPayment } from "@/lib/paymentHelper";
 
 export const dynamic = 'force-dynamic';
 
@@ -48,6 +49,7 @@ export default async function PlayerDetail({ params }) {
     );
   }
 
+  const payment = getPlayerPayment(player);
   const groups = player.groupPicks?.picks || {};
   const thirdPlaces = player.groupPicks?.thirdPlaces || [];
   const bracket = player.bracket || {};
@@ -84,6 +86,12 @@ export default async function PlayerDetail({ params }) {
             <tr>
               <td style={{ color: "var(--text-muted)", padding: "4px 1rem 4px 0" }}>Fecha</td>
               <td>{player.createdAt ? new Date(player.createdAt).toLocaleString("es-PR") : "—"}</td>
+            </tr>
+            <tr>
+              <td style={{ color: "var(--text-muted)", padding: "4px 1rem 4px 0" }}>Estado de Pago</td>
+              <td style={{ fontWeight: 700, color: payment.isDeudor ? "#ff4d4d" : "#4eff9e" }}>
+                {payment.isDeudor ? "⚠️ DEUDOR" : `💰 Pagado (${payment.label})`}
+              </td>
             </tr>
           </tbody>
         </table>
