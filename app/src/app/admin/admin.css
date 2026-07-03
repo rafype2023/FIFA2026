@@ -150,6 +150,60 @@
   color: #4eff9e;
 }
 
+.player-card .player-points-tag {
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  background: rgba(0, 184, 255, 0.1);
+  border: 1px solid rgba(0, 184, 255, 0.25);
+  border-radius: 20px;
+  color: #00b8ff;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.group-points-badge {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.group-points-badge.perfect {
+  background: rgba(78, 255, 158, 0.15);
+  border-color: rgba(78, 255, 158, 0.4);
+  color: #4eff9e;
+}
+
+.group-points-badge.good {
+  background: rgba(0, 184, 255, 0.1);
+  border-color: rgba(0, 184, 255, 0.3);
+  color: #00b8ff;
+}
+
+.match-points-badge {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  min-width: 55px;
+  text-align: center;
+}
+
+.match-points-badge.correct {
+  background: rgba(78, 255, 158, 0.15);
+  border: 1px solid rgba(78, 255, 158, 0.3);
+  color: #4eff9e;
+}
+
+.match-points-badge.incorrect {
+  background: rgba(255, 77, 77, 0.1);
+  border: 1px solid rgba(255, 77, 77, 0.25);
+  color: #ff4d4d;
+}
+
 /* Player detail page */
 .player-detail-header {
   background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));

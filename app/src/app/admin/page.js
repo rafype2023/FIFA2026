@@ -4,6 +4,7 @@ import Link from "next/link";
 import "./admin.css";
 import CopyEmailsButton from "./CopyEmailsButton";
 import { getPlayerPayment } from "@/lib/paymentHelper";
+import { calculatePlayerPoints } from "@/lib/pointsHelper";
 
 export const dynamic = 'force-dynamic';
 
@@ -21,6 +22,7 @@ function sortedEntries(obj) {
 export default async function AdminDashboard() {
   await dbConnect();
   const allPlayers = await Prediction.find({}).lean();
+  const masterKey = allPlayers.find(p => p.name?.trim().toUpperCase() === "CLAVE DE FIFA 2026");
 
   const players = allPlayers.filter(p => p.name?.trim().toUpperCase() !== "CLAVE DE FIFA 2026");
   const total = players.length;
@@ -155,6 +157,7 @@ export default async function AdminDashboard() {
       <div className="player-grid">
         {players.map(p => {
           const payment = getPlayerPayment(p);
+          const pts = calculatePlayerPoints(p, masterKey);
           return (
             <Link key={p._id.toString()} href={`/admin/players/${p._id}`} className="player-card">
               <div className="player-name">{p.name}</div>
@@ -162,6 +165,9 @@ export default async function AdminDashboard() {
               <div className="player-meta">{p.createdAt ? new Date(p.createdAt).toLocaleDateString("es-PR") : ""}</div>
               
               <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.75rem", alignItems: "center" }}>
+                {masterKey && (
+                  <span className="player-points-tag">⭐ {pts.totalPts} pts</span>
+                )}
                 {payment.isDeudor ? (
                   <span className="player-payment deudor">⚠️ DEUDOR</span>
                 ) : (
