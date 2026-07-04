@@ -3,6 +3,7 @@ import Prediction from "@/models/Prediction";
 import Link from "next/link";
 import "./standings.css";
 import PointsInfographic from "./PointsInfographic";
+import { calculatePlayerPoints } from "@/lib/pointsHelper";
 
 // Force dynamic rendering so it always fetches latest standings
 export const dynamic = 'force-dynamic';
@@ -38,71 +39,17 @@ export default async function Standings() {
     const players = rawPredictions.filter(p => p._id.toString() !== masterKey._id.toString());
     
     const standings = players.map(player => {
-      let ptsGrupos = 0;
-      let ptsR32 = 0;
-      let ptsR16 = 0;
-      let ptsQF = 0;
-      let ptsSF = 0;
-      let ptsFinal = 0;
-
-      // groupPicks is stored as { picks: { A: [...], B: [...] }, thirdPlaces: [...] }
-      const masterGroups = masterKey.groupPicks?.picks;
-      const playerGroups = player.groupPicks?.picks;
-
-      if (masterGroups && playerGroups && typeof masterGroups === "object") {
-        Object.keys(masterGroups).forEach(groupLetter => {
-           const masterArray = masterGroups[groupLetter];
-           const playerArray = playerGroups[groupLetter];
-           if (Array.isArray(masterArray) && Array.isArray(playerArray)) {
-              masterArray.forEach((teamMaster, i) => {
-                 if (playerArray[i] === teamMaster) {
-                   ptsGrupos += 1;
-                 }
-              });
-           }
-        });
-      }
-
-      const scoreRound = (roundName, pointsPerMatch) => {
-          let pts = 0;
-          const masterRound = masterKey.bracket?.[roundName];
-          const playerRound = player.bracket?.[roundName];
-          
-          if (Array.isArray(masterRound) && Array.isArray(playerRound)) {
-              masterRound.forEach((masterMatch) => {
-                  if (!masterMatch.winner) return; 
-
-                  const playerMatch = playerRound.find(m => m.id === masterMatch.id);
-                  if (playerMatch && playerMatch.winner === masterMatch.winner) {
-                     pts += pointsPerMatch;
-                  }
-              });
-          }
-          return pts;
-      };
-
-      ptsR32 = scoreRound("R32", 1);
-      ptsR16 = scoreRound("R16", 1);
-      ptsQF = scoreRound("QF", 1);
-      ptsSF = scoreRound("SF", 2);
-      const ptsThird = scoreRound("THIRD", 2);
-
-      if (masterKey.champion && player.champion === masterKey.champion) {
-         ptsFinal = 3;
-      }
-
-      const totalPts = ptsGrupos + ptsR32 + ptsR16 + ptsQF + ptsSF + ptsThird + ptsFinal;
-
+      const pts = calculatePlayerPoints(player, masterKey);
       return {
         name: player.name,
-        ptsGrupos,
-        ptsR32,
-        ptsR16,
-        ptsQF,
-        ptsSF,
-        ptsThird,
-        ptsFinal,
-        totalPts
+        ptsGrupos: pts.ptsGrupos,
+        ptsR32: pts.ptsR32,
+        ptsR16: pts.ptsR16,
+        ptsQF: pts.ptsQF,
+        ptsSF: pts.ptsSF,
+        ptsThird: pts.ptsThird,
+        ptsFinal: pts.ptsFinal,
+        totalPts: pts.totalPts
       };
     });
 

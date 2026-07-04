@@ -1,3 +1,11 @@
+export function normalizeTeamName(name) {
+  if (!name) return "";
+  return name.toLowerCase()
+             .normalize("NFD")
+             .replace(/[\u0300-\u036f]/g, "")
+             .trim();
+}
+
 export function calculatePlayerPoints(player, masterKey) {
   const result = {
     totalPts: 0,
@@ -22,7 +30,7 @@ export function calculatePlayerPoints(player, masterKey) {
       const playerArray = playerGroups[groupLetter];
       if (Array.isArray(masterArray) && Array.isArray(playerArray)) {
         masterArray.forEach((teamMaster, i) => {
-          if (playerArray[i] === teamMaster) {
+          if (normalizeTeamName(playerArray[i]) === normalizeTeamName(teamMaster)) {
             result.ptsGrupos += 1;
           }
         });
@@ -41,7 +49,9 @@ export function calculatePlayerPoints(player, masterKey) {
         if (!masterMatch.winner) return; 
 
         const playerMatch = playerRound.find(m => m.id === masterMatch.id);
-        if (playerMatch && playerMatch.winner === masterMatch.winner) {
+        // Note: As requested, we check if the selected winner matches the master winner for the match slot, 
+        // even if the matchup (team1 vs team2) is not identical.
+        if (playerMatch && normalizeTeamName(playerMatch.winner) === normalizeTeamName(masterMatch.winner)) {
           pts += pointsPerMatch;
         }
       });
@@ -56,7 +66,7 @@ export function calculatePlayerPoints(player, masterKey) {
   result.ptsThird = scoreRound("THIRD", 2);
 
   // 3. Champion (3 pts if champion matches)
-  if (masterKey.champion && player.champion === masterKey.champion) {
+  if (masterKey.champion && normalizeTeamName(player.champion) === normalizeTeamName(masterKey.champion)) {
     result.ptsFinal = 3;
   }
 
@@ -81,7 +91,7 @@ export function getMatchPoints(round, match, masterKey, index) {
   const masterMatch = masterRound.find(x => (x.id || `M${masterRound.indexOf(x) + 73}`) === matchId);
   if (!masterMatch || !masterMatch.winner) return null; // No winner set in master key yet
 
-  const isCorrect = match.winner === masterMatch.winner;
+  const isCorrect = normalizeTeamName(match.winner) === normalizeTeamName(masterMatch.winner);
   const ptsPossible = (round === "SF" || round === "THIRD") ? 2 : (round === "FINAL" ? 3 : 1);
   
   return {
@@ -99,7 +109,7 @@ export function getGroupPoints(groupLetter, playerTeams, masterGroups) {
   
   let pts = 0;
   masterTeams.forEach((teamMaster, i) => {
-    if (playerTeams[i] === teamMaster) {
+    if (normalizeTeamName(playerTeams[i]) === normalizeTeamName(teamMaster)) {
       pts += 1;
     }
   });
