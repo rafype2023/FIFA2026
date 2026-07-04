@@ -38,20 +38,23 @@ export function calculatePlayerPoints(player, masterKey) {
     });
   }
 
-  // Helper for knockout rounds
+  // Helper for knockout rounds - checks if predicted winner is in the list of actual winners of the round
   const scoreRound = (roundName, pointsPerMatch) => {
     let pts = 0;
     const masterRound = masterKey.bracket?.[roundName];
     const playerRound = player.bracket?.[roundName];
     
     if (Array.isArray(masterRound) && Array.isArray(playerRound)) {
-      masterRound.forEach((masterMatch) => {
-        if (!masterMatch.winner) return; 
+      // Get all actual winners who advanced in this round
+      const masterWinners = masterRound
+        .map(m => m.winner)
+        .filter(Boolean)
+        .map(normalizeTeamName);
 
-        const playerMatch = playerRound.find(m => m.id === masterMatch.id);
-        // Note: As requested, we check if the selected winner matches the master winner for the match slot, 
-        // even if the matchup (team1 vs team2) is not identical.
-        if (playerMatch && normalizeTeamName(playerMatch.winner) === normalizeTeamName(masterMatch.winner)) {
+      playerRound.forEach((playerMatch) => {
+        if (!playerMatch.winner) return; 
+
+        if (masterWinners.includes(normalizeTeamName(playerMatch.winner))) {
           pts += pointsPerMatch;
         }
       });
@@ -89,9 +92,17 @@ export function getMatchPoints(round, match, masterKey, index) {
 
   const matchId = match.id || `M${index + 73}`;
   const masterMatch = masterRound.find(x => (x.id || `M${masterRound.indexOf(x) + 73}`) === matchId);
-  if (!masterMatch || !masterMatch.winner) return null; // No winner set in master key yet
+  if (!masterMatch || !masterMatch.winner) return null; // No winner set in master key for this slot yet
 
-  const isCorrect = normalizeTeamName(match.winner) === normalizeTeamName(masterMatch.winner);
+  // Get all actual winners who advanced in this round
+  const masterWinners = masterRound
+    .map(m => m.winner)
+    .filter(Boolean)
+    .map(normalizeTeamName);
+
+  if (!match.winner) return null;
+
+  const isCorrect = masterWinners.includes(normalizeTeamName(match.winner));
   const ptsPossible = (round === "SF" || round === "THIRD") ? 2 : (round === "FINAL" ? 3 : 1);
   
   return {
